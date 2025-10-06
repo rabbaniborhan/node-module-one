@@ -1,4 +1,9 @@
 const express = require("express");
+class user {
+  constructor(name, age) {
+    (name = this.name), (age = this.age);
+  }
+}
 const router = express.Router();
 router.get("/users/:id", (req, res) => {
   const userId = req.params.id;
@@ -7,10 +12,17 @@ router.get("/users/:id", (req, res) => {
 });
 
 router.post("/users", (req, res) => {
-  const { name, age } = req.body;
+  const users = user(req.body);
 
-  if (!name || !age) {
-    console.log("name and age not found");
+  if (!name) {
+    res.status(400).json({
+      error: "Name is required",
+    });
+  }
+  if (!age) {
+    res.status(400).json({
+      error: "Age is required",
+    });
   }
   const user = { name, age };
   res.status(201).json({
